@@ -1,0 +1,7 @@
+.wccpf-admin-form-wrap input {
+	width: 50%;
+}
+
+.wccpf-admin-form-wrap #submit {
+	width: unset;
+}

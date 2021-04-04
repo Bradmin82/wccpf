@@ -4,10 +4,11 @@
  */
 
 function wccpf_save_fields( $cart_item_key, $product_id = null, $quantity= null, $variation_id= null, $variation= null ) {
+	include('wccpf-get-cats.php');
     if( isset( $_REQUEST['team-name'] ) ) {
         WC()->session->set( $cart_item_key.'_team_name', $_REQUEST['team-name'] );
     }
-    echo '<h6 style="color:hotpink;position:absolute;top:100px;"><pre>'.print_r($form_fields, $secondary_cat_names).'</pre>'.$secondary_cat_names[1].'hmm</h6>';
+    echo '<h6 style="color:hotpink;position:absolute;top:100px;"><pre>'.print_r($form_fields, $secondary_cat_names).'</pre>'.$secondary_cat_names[1].'</h6>';
     foreach($form_fields as $form_field) {
 		//array_push($form_field_names, $form_field['name']);
 		echo '<h6 style="color:hotpink;">'.print_r($form_field).'</h6>';

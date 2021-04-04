@@ -19,10 +19,10 @@ function add_new_menu_items()
     $icon              = 'dashicons-palmtree';
 	$position          = 50;
     add_menu_page(
-        "WooCommerce Custom Product Forms", //Required. Text in browser title bar when the page associated with this menu item is displayed.
-        "HAM", //Required. Text to be displayed in the menu.
-        "manage_options", //Required. The required capability of users to access this menu item.
-        "wccpf-the-options", //Required. A unique identifier to identify this menu item.
+        'WooCommerce Custom Product Forms', //Required. Text in browser title bar when the page associated with this menu item is displayed.
+        'HAM', //Required. Text to be displayed in the menu.
+        'manage_options', //Required. The required capability of users to access this menu item.
+        'wccpf-the-options', //Required. A unique identifier to identify this menu item.
         $pluginOptionsPage, //Optional. This callback outputs the content of the page associated with this menu item.
         $icon, //Optional. The URL to the menu item icon.
         $position //Optional. Position of the menu item in the menu.
@@ -40,12 +40,12 @@ function wccpf_options_page()
             <?php
            
                 //add_settings_section callback is displayed here. For every new section we need to call settings_fields.
-                settings_fields("header_section");
-                settings_fields("fresh_meat_section");
+                settings_fields('header_section');
+                settings_fields('fresh_meat_section');
                 
                
                 // all the add_settings_field callbacks is displayed here
-                do_settings_sections("wccpf-options");
+                do_settings_sections('wccpf-options');
            
                 // Add the submit button to serialize the options
                 submit_button();
@@ -57,10 +57,14 @@ function wccpf_options_page()
 }
 
 //this action callback is triggered when wordpress is ready to add new items to menu.
-add_action("admin_menu", "add_new_menu_items");
+add_action('admin_menu', 'add_new_menu_items');
 add_action('woocommerce_before_add_to_cart_button', 'action_get_those_prod_cats', 51);
 // check in wccpf-do.php to get this function working
 add_action( 'woocommerce_checkout_update_order_meta', 'wccpf_checkout_field_update_order_meta', 52);
+/*
+add_action( 'woocommerce_add_to_cart', 'save_wccpf_name_field', 1, 5 );
+add_filter( 'woocommerce_cart_item_name', 'render_wccpf_meta_on_cart_item', 1, 3 );
+*/
 
 /*WordPress Settings API*/
 
@@ -124,7 +128,6 @@ echo "cube of 3 = " . $var(3);
 		$hamFieldCount++;
 	}
 	
-
     //section name, form element name, callback for sanitization
     register_setting("header_section", "wccpf_form_field_1");
     register_setting("header_section", "wccpf_form_field_2");
@@ -175,7 +178,7 @@ function display_header_options_content(){
 }
 
 function display_fresh_meat_section_options_content(){
-	echo "The header of the development wccpf<br />";
+	echo "The header for wccpf<br />";
 	include 'inc/prod-cat-list.php';
 	include('inc/frags/wccpf-admin-input-fields.php');
 	//include('inc/frags/test.php');
@@ -238,3 +241,7 @@ include 'inc/wccpf-do.php';
 //this action is executed after loads its core, after registering all actions, finds out what page to execute and before producing the actual output(before calling any action callback)
 add_action("admin_init", "display_options");
 // add_action( 'woocommerce_checkout_update_order_meta', 'wccpf_checkout_field_update_order_meta' );
+/*
+add_action( 'woocommerce_add_to_cart', 'save_wccpf_name_field', 1, 5 );
+add_filter( 'woocommerce_cart_item_name', 'render_wccpf_meta_on_cart_item', 1, 3 );
+*/

@@ -20,8 +20,6 @@ function wccpf_save_fields( $cart_item_key, $product_id = null, $quantity= null,
 	$form_2 = get_option('wccpf_form_field_2');
 */
 	
-	//wp_enqueue_script('wccpfadminscripts', 'http://www.shopblackline.com/wp-content/plugins/ham/wccpf.js', array( 'jquery' ) );
-	
 	// This will be the loop for all product pages to display the form assigned, if assigned
 	include('wccpf-get-cats.php');
 	// Use ^this frag instead of wp_list_pluck()ing above, replace necessary vars below carefully, and get the loop right with prod ids matching prod 
@@ -35,7 +33,7 @@ function wccpf_save_fields( $cart_item_key, $product_id = null, $quantity= null,
 			foreach($term_taxonomy_ids as $term_taxonomy_id) {
 				if($term_taxonomy_id == $secondary_cats[$numOfSecondaryProdCatsCount] && get_option($secondaryProdOptionName) != null && get_option($secondaryProdOptionName) !== '') {
 					$class_name = preg_replace('/ /i', '-', strtolower($secondary_cat_names[$numOfSecondaryProdCatsCount]));
-					echo '<h2>Woof Woof, Customize '.$secondary_cats[$numOfSecondaryProdCatsCount].'. your '.$names[0].'. '.$secondary_cat_names[$numOfSecondaryProdCatsCount].' '.$numOfSecondaryProdCatsCount.' here</h2>'; 
+					echo '<h2 style="position:absolute;top:150px;left:8px;">Woof Woof, Customize '.$secondary_cats[$numOfSecondaryProdCatsCount].'. your '.$names[0].'. '.$secondary_cat_names[$numOfSecondaryProdCatsCount].' '.$numOfSecondaryProdCatsCount.' here</h2>'; 
 					$matches = [];
 					$url = get_option($secondaryProdOptionName);
  					$get_form_id = preg_match('/(\[*id=.)(\d+).*(.\])/', $url, $matches);
@@ -48,10 +46,17 @@ function wccpf_save_fields( $cart_item_key, $product_id = null, $quantity= null,
 							array_push($form_field_names, $form_field['name']);							
 						}
 						for($i = 0; $i < count($form_field_names); $i++) {
-							if($form_fields[$i]->type != 'submit') {
+							if($form_fields[$i]->type != 'submit' && $form_fields[$i]->type != null) {
+								echo '<h5 style="color:brown;">'.$form_fields[$i]->name.'</h5>';
+/*
 							echo '<h1 style="color:brown;">'.$form_fields[$i]->name.'</h1>';
 							echo '<h4 style="color:brown;">'.$form_fields[$i]->type.'</h4>';
-								$ham_field_value = $form_fields[$i]->name.'_field';
+*/
+								$ham_field_name = $form_fields[$i]->name.'_field';
+								$ham_field_values = $form_fields[$i]->values;
+								foreach($ham_field_values as $ham_field_value) {
+									echo '<h6 style="color:hotpink;">'.print_r($ham_field_value).' '.$ham_field_value.'</h6>';
+								}
 /*
 								woocommerce_form_field( $ham_field_value, array(
 							        'type'          => $form_fields[$i]->type,
@@ -64,7 +69,7 @@ function wccpf_save_fields( $cart_item_key, $product_id = null, $quantity= null,
 */
 							}
 						}
-						 echo '<h6 style="color:hotpink;position:absolute;top:100px;"><pre>'.print_r($form_fields, $secondary_cat_names).'</pre>'.$secondary_cat_names[1].'</h6>';
+						 //echo '<h6 style="color:hotpink;position:absolute;top:100px;"><pre>'.print_r($form_fields, $secondary_cat_names).'</pre>'.$secondary_cat_names[1].'</h6>';
 						foreach($form_fields as $form_field) {
 							//array_push($form_field_names, $form_field['name']);
 							echo '<h6 style="color:hotpink;">'.print_r($form_field).'</h6>';
@@ -84,7 +89,6 @@ function wccpf_save_fields( $cart_item_key, $product_id = null, $quantity= null,
 		$numOfSecondaryProdCatsCount++;
 	}
 
-/*
 	include('wccpf-get-cats.php');
     if( isset( $_REQUEST['team-name'] ) ) {
         WC()->session->set( $cart_item_key.'_team_name', $_REQUEST['team-name'] );
@@ -95,7 +99,6 @@ function wccpf_save_fields( $cart_item_key, $product_id = null, $quantity= null,
 		echo '<h6 style="color:hotpink;">'.print_r($form_field).'</h6>';
 		
 	}
-*/
 }
 // below action NEEDS TO BE added to root index.php or "ham.php"
 // add_action( 'woocommerce_add_to_cart', 'wccpf_save_fields', 1, 5 );

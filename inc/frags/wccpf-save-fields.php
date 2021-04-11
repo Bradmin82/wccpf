@@ -6,6 +6,12 @@
 function wccpf_save_fields( $cart_item_key, $product_id = null, $quantity= null, $variation_id= null, $variation= null ) {
 	global $product;	
 	
+/*
+	// clear cart
+	global $woocommerce;
+	$woocommerce->cart->empty_cart();
+*/
+	
 	$terms = get_the_terms( $product->get_id(), 'product_cat' );
 
 	$slugs = wp_list_pluck( $terms, 'slug' ); 
@@ -45,9 +51,24 @@ function wccpf_save_fields( $cart_item_key, $product_id = null, $quantity= null,
 						foreach($form_fields as $form_field) {
 							array_push($form_field_names, $form_field['name']);							
 						}
-						for($i = 0; $i < count($form_field_names); $i++) {
+						echo '<div style="margin-top:150px;"></div>';
+						$field_count = count($form_field_names);
+						for($i = 0; $i < $field_count; $i++) {
 							if($form_fields[$i]->type != 'submit' && $form_fields[$i]->type != null) {
+								
 								echo '<h5 style="color:brown;">'.$form_fields[$i]->name.'</h5>';
+								/*
+								 * Do something with the wccpf form fields
+								 */
+							    if( isset( $_REQUEST[$form_fields[$i]->name] ) ) {
+								    $underscore_name = str_replace('-', '_', $form_fields[$i]->name);
+								    echo '<h5 style="color:#aff;">$underscore_name: '.$underscore_name.'</h5>';
+/*
+								    echo '<h5 style="color:#faa;">got one: '.$_REQUEST[$form_fields[$i]->name].'</h5>';
+								    echo '<h5 style="color:#faa;">got one: '.$form_fields[$i]->name.'</h5>';
+*/
+							        WC()->session->set( $cart_item_key.'_'.$underscore_name, $_REQUEST[$form_fields[$i]->name] );
+							    }
 /*
 							echo '<h1 style="color:brown;">'.$form_fields[$i]->name.'</h1>';
 							echo '<h4 style="color:brown;">'.$form_fields[$i]->type.'</h4>';
@@ -55,7 +76,7 @@ function wccpf_save_fields( $cart_item_key, $product_id = null, $quantity= null,
 								$ham_field_name = $form_fields[$i]->name.'_field';
 								$ham_field_values = $form_fields[$i]->values;
 								foreach($ham_field_values as $ham_field_value) {
-									echo '<h6 style="color:hotpink;">'.print_r($ham_field_value).' '.$ham_field_value.'</h6>';
+									echo '<h6 style="color:hotpink;">$ham_field_value'.print_r($ham_field_value).' '.$ham_field_value.'</h6>';
 								}
 /*
 								woocommerce_form_field( $ham_field_value, array(
@@ -72,7 +93,7 @@ function wccpf_save_fields( $cart_item_key, $product_id = null, $quantity= null,
 						 //echo '<h6 style="color:hotpink;position:absolute;top:100px;"><pre>'.print_r($form_fields, $secondary_cat_names).'</pre>'.$secondary_cat_names[1].'</h6>';
 						foreach($form_fields as $form_field) {
 							//array_push($form_field_names, $form_field['name']);
-							echo '<h6 style="color:hotpink;">'.print_r($form_field).'</h6>';
+							//echo '<h6 style="color:hotpink;">'.print_r($form_field).'</h6>';
 						
 						}
 /*
@@ -88,17 +109,27 @@ function wccpf_save_fields( $cart_item_key, $product_id = null, $quantity= null,
 		}
 		$numOfSecondaryProdCatsCount++;
 	}
+	
+/*
+	include('wccpf-field-loop');
+	if(current_user_can( 'manage_options' )) {
+		$incoming_product_action = (
+			'<h1>Yo yo yo yo my nigggs</h1>'	
+		);
+		//wccpf_product_loop($incoming_product_action);	
+	}
+*/
+	
 
+/*
 	include('wccpf-get-cats.php');
     if( isset( $_REQUEST['team-name'] ) ) {
         WC()->session->set( $cart_item_key.'_team_name', $_REQUEST['team-name'] );
+        WC()->session->set( $cart_item_key.'_colors', $_REQUEST['colors'] );
     }
-    echo '<h6 style="color:hotpink;position:absolute;top:100px;"><pre>'.print_r($form_fields, $secondary_cat_names).'</pre>'.$secondary_cat_names[1].'</h6>';
-    foreach($form_fields as $form_field) {
-		//array_push($form_field_names, $form_field['name']);
-		echo '<h6 style="color:hotpink;">'.print_r($form_field).'</h6>';
-		
-	}
+*/
+    //echo '<h6 style="color:hotpink;position:absolute;top:100px;"><pre>'.print_r($form_fields, $secondary_cat_names).'</pre>'.$secondary_cat_names[1].'</h6>';
+
 }
 // below action NEEDS TO BE added to root index.php or "ham.php"
 // add_action( 'woocommerce_add_to_cart', 'wccpf_save_fields', 1, 5 );

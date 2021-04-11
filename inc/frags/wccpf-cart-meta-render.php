@@ -8,10 +8,22 @@ function wccpf_render_meta_on_cart_item( $title = null, $cart_item = null, $cart
 	global $product;	
 	?>
 	<script type="text/javascript">
-		console.log('we here totes');
+		console.log('we here totes <?php echo $cart_item[title]; echo $cart_item[line_total]; ?></pre>');
 	</script>
 	<?php
-		
+		if(current_user_can( 'manage_options' )) { 
+			echo '<h5>This is dope! <pre>'.print_r($cart_item).'</pre></h5>';
+			echo '<h5>This is price from cart_item[line_total] <pre>$'.$cart_item[line_total].'</pre></h5>';
+			echo '<h5>Can\'t render name! <pre>'.$cart_item[name].'</pre></h5>';			
+		}
+/*
+	    if( $cart_item_key && WC()->session->__isset( $cart_item_key.'_'.$underscore_name ) ) {
+		    echo $title. '<dl class="cart-only">
+		             <dt class="">HAM '.$form_fields[$i]->name.': </dt>
+		             <dd class="wccpf-cart-meta-render"><p>'. WC()->session->get( $cart_item_key.'_'.$underscore_name) .'</p></dd>         
+		          </dl>';
+		}
+*/
 	/*
 	 *
 	 * Return TRUE bc the rest of this shit breaks everything :(

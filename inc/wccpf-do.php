@@ -223,6 +223,10 @@ function dump_form_fields($x) {
 */
 
 /**
+ * Validate the order meta with field values
+ */
+ include('frags/wccpf-field-validation.php');
+/**
  * Save the order meta with field values
  */
  include('frags/wccpf-save-fields.php');

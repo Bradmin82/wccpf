@@ -230,9 +230,11 @@ function dump_form_fields($x) {
  * Save the order meta with field values
  */
  include('frags/wccpf-save-fields.php');
- 
  /**
+ * Render the order meta with field value in cart
+ */
+ include('frags/wccpf-cart-meta-render.php');
+  /**
  * Update the order meta with field value
  */
  include('frags/wccpf-checkout-update-order-meta.php');
- 

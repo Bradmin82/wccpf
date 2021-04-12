@@ -60,9 +60,9 @@ function wccpf_options_page()
 add_action('admin_menu', 'add_new_menu_items');
 add_action('woocommerce_before_add_to_cart_button', 'action_get_those_prod_cats', 51);
 // check in wccpf-do.php to get this function working
-add_action( 'woocommerce_checkout_update_order_meta', 'wccpf_checkout_field_update_order_meta', 52);
 add_action( 'woocommerce_add_to_cart_validation', 'wccpf_field_validation', 10, 5 );
 add_action( 'woocommerce_add_to_cart', 'wccpf_save_fields', 1, 5 );
+add_action( 'woocommerce_checkout_update_order_meta', 'wccpf_checkout_field_update_order_meta', 52);
 add_filter( 'woocommerce_cart_item_name', 'wccpf_render_meta_on_cart_item', 10, 3 );
 /*
 add_action( 'woocommerce_add_to_cart', 'save_wccpf_name_field', 1, 5 );

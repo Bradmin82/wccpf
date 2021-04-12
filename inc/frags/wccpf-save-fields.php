@@ -47,6 +47,7 @@ function wccpf_save_fields( $cart_item_key, $product_id = null, $quantity= null,
 						foreach($form_fields as $form_field) {
 							array_push($form_field_names, $form_field['name']);							
 						}
+						WC()->session->set( $cart_item_key.'_callback_field_names', $form_field_names );
 						$field_count = count($form_field_names);
 						for($i = 0; $i < $field_count; $i++) {
 							if($form_fields[$i]->type != 'submit' && $form_fields[$i]->type != null) {
@@ -55,7 +56,9 @@ function wccpf_save_fields( $cart_item_key, $product_id = null, $quantity= null,
 								 */
 							    if( isset( $_REQUEST[$form_fields[$i]->name] ) ) {
 								    $underscore_name = str_replace('-', '_', $form_fields[$i]->name);
+								    echo '<h3 style="margin-top:100px;">field saved as: '.$cart_item_key.'_'.$underscore_name.'<br>and value: '.$_REQUEST[$form_fields[$i]->name].'</h3>';
 							        WC()->session->set( $cart_item_key.'_'.$underscore_name, $_REQUEST[$form_fields[$i]->name] );
+							        WC()->session->set( $cart_item_key.'_field_'.$i, $cart_item_key.'_'.$underscore_name.'_callback' );
 							    }
 							}
 						}

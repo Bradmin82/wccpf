@@ -4,103 +4,35 @@
  */
 
 function wccpf_render_meta_on_cart_item( $title = null, $cart_item = null, $cart_item_key = null ) {
-// function wccpf_render_meta_on_cart_item( $title = null, $cart_item = null, $cart_item_key = null, $cart_item_key, $product_id = null, $quantity= null, $variation_id= null, $variation= null ) {	
 	global $product;	
-	?>
-	<script type="text/javascript">
-		console.log('we here totes <?php echo $cart_item[title]; echo $cart_item[line_total]; ?></pre>');
-	</script>
-	<?php
-		if(current_user_can( 'manage_options' )) { 
-			echo '<h5>This is dope! <pre>'.print_r($cart_item).'</pre></h5>';
-			echo '<h5>This is price from cart_item[line_total] <pre>$'.$cart_item[line_total].'</pre></h5>';
-			echo '<h5>Can\'t render name! <pre>'.$cart_item[name].'</pre></h5>';			
-		}
+	if(current_user_can( 'manage_options' )) {
 /*
-	    if( $cart_item_key && WC()->session->__isset( $cart_item_key.'_'.$underscore_name ) ) {
-		    echo $title. '<dl class="cart-only">
-		             <dt class="">HAM '.$form_fields[$i]->name.': </dt>
-		             <dd class="wccpf-cart-meta-render"><p>'. WC()->session->get( $cart_item_key.'_'.$underscore_name) .'</p></dd>         
-		          </dl>';
-		}
+		echo '<div style="max-width:800px;white-space:prewrap;"><h5>This is price from cart_item[line_total] <pre>$'.$cart_item[line_total].'</pre></h5>';
+		echo '<h5>Name: <pre>'.$cart_item[data]->name.'</pre></h5>';
+		echo '<h5>Special key: <pre>'.$cart_item[key].'</pre></h5>';
+		echo '<h5>Data: <pre>'.$cart_item[data].'</pre></h5></div>';
 */
-	/*
-	 *
-	 * Return TRUE bc the rest of this shit breaks everything :(
-	 *
-	 */
-	return true;
-/*
-	// clear cart
-	global $woocommerce;
-	$woocommerce->cart->empty_cart();
-*/
-	
-	$terms = get_the_terms( $product->get_id(), 'product_cat' );
 
-	$slugs = wp_list_pluck( $terms, 'slug' ); 
-	$parents = wp_list_pluck( $terms, 'parent' );
-	$counts = wp_list_pluck( $terms, 'count' );
-	$term_taxonomy_ids = wp_list_pluck( $terms, 'term_taxonomy_id' );
-	$names = wp_list_pluck( $terms, 'name' );
-	// print the names, for funzies
-	//if ( current_user_can( 'manage_options' ) ) { print("<pre>".print_r($names, true)."</pre>");}
-
-	
-	// This will be the loop for all product pages to display the form assigned, if assigned
-	include('wccpf-get-cats.php');
-	// Use ^this frag instead of wp_list_pluck()ing above, replace necessary vars below carefully, and get the loop right with prod ids matching prod 
-	$numOfSecondaryProdCats = count($secondary_cats);
-	$numOfSecondaryProdCatsCount = 0;
-
-	while($numOfSecondaryProdCatsCount < $numOfSecondaryProdCats) {
-		$secondaryProdOptionName = 'ham_form_field_'.$numOfSecondaryProdCatsCount;
-		//if(get_the_title($secondary_cats[$numOfSecondaryProdCatsCount]) != 'Soccer Banners') {
-		if(current_user_can( 'manage_options' )) { 
-			foreach($term_taxonomy_ids as $term_taxonomy_id) {
-				if($term_taxonomy_id == $secondary_cats[$numOfSecondaryProdCatsCount] && get_option($secondaryProdOptionName) != null && get_option($secondaryProdOptionName) !== '') {
-					$class_name = preg_replace('/ /i', '-', strtolower($secondary_cat_names[$numOfSecondaryProdCatsCount]));
-					$matches = [];
-					$url = get_option($secondaryProdOptionName);
- 					$get_form_id = preg_match('/(\[*id=.)(\d+).*(.\])/', $url, $matches);
- 					$cf7_form_id = $matches[2];
- 					if($cf7_form_id != null && $cf7_form_id !== '') {
-						$ContactForm = WPCF7_ContactForm::get_instance( $cf7_form_id );
-						$form_fields = $ContactForm->scan_form_tags();
-						$form_field_names = [];
-						foreach($form_fields as $form_field) {
-							array_push($form_field_names, $form_field['name']);							
-						}
-						$field_count = count($form_field_names);
-						for($i = 0; $i < $field_count; $i++) {
-							if($form_fields[$i]->type != 'submit' && $form_fields[$i]->type != null) {
-								/*
-								 * Do something with the wccpf form fields
-								 */
-							    if( isset( $_REQUEST[$form_fields[$i]->name] ) ) {
-								    $underscore_name = str_replace('-', '_', $form_fields[$i]->name);
-								    
-/*
-								    if( $cart_item_key && WC()->session->__isset( $cart_item_key.'_'.$underscore_name ) ) {
-								        echo $title. '<dl class="cart-only">
-								                 <dt class="">HAM '.$form_fields[$i]->name.': </dt>
-								                 <dd class="wccpf-cart-meta-render"><p>'. WC()->session->get( $cart_item_key.'_'.$underscore_name) .'</p></dd>         
-								              </dl>';
-								    }
-*/
-							    }
-							}
-						}
-					} else {
-						//echo '<h4 class="'.$class_name.'-form-unavailable" style="color:#f00;">No HAM form [shortcode] added for this product cat.</h4>';
-						return true;
-					}					
-				}
+		if( $cart_item_key && WC()->session->__isset($cart_item_key.'_callback_field_names') ) {
+			$field_names = WC()->session->get( $cart_item_key.'_callback_field_names' );
+			$field_names_count = count($field_names);
+			if($field_names_count != null) {
+				// echo '<h1>There are '.$field_names_count.' fields in this cats prod form</h1>';
+				for($i = 0; $i <= $field_names_count; $i++) {
+					$underscore_name = str_replace('-', '_', $field_names[$i]);
+					if(WC()->session->__isset( $cart_item_key.'_'.$underscore_name )) {
+						// $cart_item_key.'_field_'.$i
+						// echo '<p>'.WC()->session->get( $cart_item_key.'_field_'.$i ).'</p>';
+			        	echo '<dl class="ham checkout">
+		                	<dt class="">HAM-'.$field_names[$i].': </dt>
+							<dd class=""><p>'. WC()->session->get( $cart_item_key.'_'.$underscore_name) .'</p></dd>
+							</dl>';
+			    	}
+			    }	
 			}
 		}
-		$numOfSecondaryProdCatsCount++;
 	}
 }
-//add_filter( 'woocommerce_cart_item_name', 'wccpf_render_meta_on_cart_item', 1, 3 );
- // below action NEEDS TO BE added to root index.php or "ham.php"
+
+// below action NEEDS TO BE added to root index.php or "ham.php"
 // 	add_filter( 'woocommerce_cart_item_name', 'wccpf_render_meta_on_cart_item', 1, 3 );

@@ -20,14 +20,15 @@ function wccpf_render_meta_on_cart_item( $title = null, $cart_item = null, $cart
 				// echo '<h1>There are '.$field_names_count.' fields in this cats prod form</h1>';
 				for($i = 0; $i <= $field_names_count; $i++) {
 					$underscore_name = str_replace('-', '_', $field_names[$i]);
-					if(WC()->session->__isset( $cart_item_key.'_'.$underscore_name )) {
-						// $cart_item_key.'_field_'.$i
-						// echo '<p>'.WC()->session->get( $cart_item_key.'_field_'.$i ).'</p>';
-			        	echo '<dl class="ham checkout">
-		                	<dt class="">HAM-'.$field_names[$i].': </dt>
-							<dd class=""><p>'. WC()->session->get( $cart_item_key.'_'.$underscore_name) .'</p></dd>
-							</dl>';
-			    	}
+					$get_wccpf_field_value_handle = $cart_item_key.'_'.$underscore_name;
+					if(WC()->session->__isset( $get_wccpf_field_value_handle )) {
+						//if(WC()->session->get( $get_wccpf_field_value_handle) !== '') {
+				        	echo '<dl class="ham checkout">
+			                	<dt class="">HAM-'.$field_names[$i].': </dt>
+								<dd class=""><p>'. WC()->session->get( $get_wccpf_field_value_handle) .'</p></dd>
+								</dl>';
+				    	//}
+				    }
 			    }	
 			}
 		}

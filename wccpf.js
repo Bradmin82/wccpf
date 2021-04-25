@@ -11,7 +11,7 @@ jQuery(document).ready( function($) {
 	    var prodForm = $('form.cart');
 	    var quantity = $('.quantity:first');
 	    var checkoutBtn = $('.single_add_to_cart_button');
-	    prodForm.append(quantity, checkoutBtn);
+	    //prodForm.append(quantity, checkoutBtn);
     }
     if(isHAM) {
 	    console.log('HAM here ' + isHAM + ' time');
@@ -29,11 +29,11 @@ jQuery(document).ready( function($) {
 	    function wpcf7ErrorContent() {
 		    var theErrorMessage = wpcf7Error.html();
 		    if(theErrorMessage != null && theErrorMessage.length) {
-			    $('.summary').prepend('<h2 class="ham-error-notif" style="color:red;">'+theErrorMessage+'</h2>');
+			    //$('.summary').prepend('<h2 class="ham-error-notif" style="color:red;">'+theErrorMessage+'</h2>');
 			    prodFormSubmitBtn.addClass('disabled wc-variation-selection-needed');
 			}
 	    } 
-	    wpcf7ErrorContent();
+	    // wpcf7ErrorContent();
 	    
 	    
 	    // Validation should be handled by adding wccpf to $product->get_available_variations() array
@@ -42,6 +42,7 @@ jQuery(document).ready( function($) {
 			echo var_dump($product_variations); // Displaying the array
 		*/
 	    function fieldValidation() {
+/*
 			    var isValid = isCf7NotValid < 1;				
 				var all = cf7Inputs.map(function() {
 					var cf7Input = $(this).val();
@@ -55,10 +56,20 @@ jQuery(document).ready( function($) {
 					}
 				    return this.innerHTML;
 				}).get();
+*/
 				// console.log(all.join());
 	    }
-	    fieldValidation();
+	    //fieldValidation();
 	    
+	    
+	    const hamSubmit = $('.ham-security .single_add_to_cart_button');
+	    hamSubmit.click(function(e) {
+		   //e.preventDefault();
+		   console.log('click'); 
+		   //hamSubmit.click();
+	    });
+	    
+/*
 	    cf7Inputs.on('keyup', function(event) {
 		    //clear error array
 		    errors.length = 0;
@@ -76,7 +87,9 @@ jQuery(document).ready( function($) {
 				wpcf7Error.css('display', 'none');
 			}
 	    });
+*/
 	    
+/*
 		prodFormSubmitBtn.click(function(event) {
 		    //clear error array
 		    errors.length = 0;
@@ -95,12 +108,15 @@ jQuery(document).ready( function($) {
 				// prodFormSubmitBtn.click();
 			}
 	    });
+*/
 	    
     }
 	
+/*
 	$(document.body).on('checkout_error', function () {
 	    var error_count = $('.woocommerce-error li').length;
 	      
     });
+*/
 	
 });

@@ -149,7 +149,7 @@ function display_header_options_content(){
 
 function display_fresh_meat_section_options_content(){
 	echo "The header for wccpf<br />";
-	include 'inc/prod-cat-list.php';
+	//include 'inc/prod-cat-list.php';
 	include('inc/frags/wccpf-admin-input-fields.php');
 	//include('inc/frags/test.php');
 	echo 'Number of Secondary Categories: ' . count($secondary_cats);

@@ -1,9 +1,9 @@
 <?php
 /**
- * Save the wccpf form field values
+ * Validate the wccpf form fields
  */
 
-function wccpf_save_fields( $cart_item_key, $product_id = null, $quantity= null, $variation_id= null, $variation= null ) {
+function wccpf_field_validation( $cart_item_key, $product_id = null, $quantity= null, $variation_id= null, $variation= null ) {
 	global $product;	
 	
 /*
@@ -11,6 +11,14 @@ function wccpf_save_fields( $cart_item_key, $product_id = null, $quantity= null,
 	global $woocommerce;
 	$woocommerce->cart->empty_cart();
 */
+
+/*
+// wordpress.stackexchange.com/questions/55813/the-hook-for-the-ajax-add-to-cart-button
+global $post; // Assuming it's already set up
+$_product = &new woocommerce_product( $post->ID );
+woocommerce_template_loop_add_to_cart( $post, $_product );
+*/
+// That means the AJAX hooks aren't being added. add_action('wp_ajax_woocommerce_add_to_cart', 'woocommerce_ajax_add_to_cart'); and add_action('wp_ajax_nopriv_woocommerce_add_to_cart', 'woocommerce_ajax_add_to_cart');
 	
 	$terms = get_the_terms( $product->get_id(), 'product_cat' );
 
@@ -47,22 +55,34 @@ function wccpf_save_fields( $cart_item_key, $product_id = null, $quantity= null,
 						foreach($form_fields as $form_field) {
 							array_push($form_field_names, $form_field['name']);							
 						}
-						WC()->session->set( $cart_item_key.'_callback_field_names', $form_field_names );
 						$field_count = count($form_field_names);
 						for($i = 0; $i < $field_count; $i++) {
 							if($form_fields[$i]->type != 'submit' && $form_fields[$i]->type != null) {
 								/*
 								 * Do something with the wccpf form fields
 								 */
-							    if( isset( $_REQUEST[$form_fields[$i]->name] ) ) {
-								    $underscore_name = str_replace('-', '_', $form_fields[$i]->name);
-								    // echo '<h3 style="margin-top:100px;">field saved as: '.$cart_item_key.'_'.$underscore_name.'<br>and value: '.$_REQUEST[$form_fields[$i]->name].'</h3>';
-							        WC()->session->set( $cart_item_key.'_'.$underscore_name, $_REQUEST[$form_fields[$i]->name] );
+							    if( empty( $_REQUEST[$form_fields[$i]->name] ) ) {
+							        wc_add_notice( __( 'Please fill all form fields', 'woocommerce' ), 'error' );
+							        return false;
 							    }
+							    
+/*
+							    public function validate( $field_label, $value ) {
+									$field_to_compare_value = sanitize_text_field( $_POST[ $this->field_to_compare ] );
+									$valid = $field_to_compare_value === $value;
+									if ( ! $valid ) {
+										wc_add_notice( sprintf( __( 'Invalid %1$s value.', 'wpdesk' ), '<strong>' . $field_label . '</strong>' ), 'error' );
+									}
+								}
+								// investigate these wc methods:
+								// woocommerce_checkout_process
+								// woocommerce_checkout_order_processed
+*/
 							}
 						}
+						return true;
 					} else {
-						echo '<h4 class="'.$class_name.'-form-unavailable" style="color:#f00;">No HAM form [shortcode] added for this product cat.</h4>';
+						return true;
 					}					
 				}
 			}
@@ -71,4 +91,6 @@ function wccpf_save_fields( $cart_item_key, $product_id = null, $quantity= null,
 	}
 }
 // below action NEEDS TO BE added to root index.php or "ham.php"
-// add_action( 'woocommerce_add_to_cart', 'wccpf_save_fields', 1, 5 );
+// action appended to wccpf-do.php
+// add_action( 'woocommerce_add_to_cart_validation', 'wccpf_field_validation', 10, 5 );
+		

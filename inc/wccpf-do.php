@@ -221,8 +221,11 @@ function dump_form_fields($x) {
 	var_dump( $form_fields );
 }
 */
+// check answer by ben: https://stackoverflow.com/questions/5690541/best-way-to-avoid-the-submit-due-to-a-refresh-of-the-page
+// below needs to live in index and will break site
+//remove_action( 'woocommerce_after_shop_loop_item', 'woocommerce_template_loop_add_to_cart');
 
-/**
+ /**
  * Validate the order meta with field values
  */
  include('frags/wccpf-field-validation.php');

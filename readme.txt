@@ -1,3 +1,10 @@
+/*
+ * This branch was taken from older, functional branch of b_dev
+ *
+ *
+*/
+
+
 === Hello Dolly ===
 Contributors: matt, wordpressdotorg
 Stable tag: 1.7.2

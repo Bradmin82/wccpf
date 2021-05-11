@@ -61,14 +61,47 @@ add_action('admin_menu', 'add_new_menu_items');
 add_action('woocommerce_before_add_to_cart_button', 'action_get_those_prod_cats', 51);
 // check in wccpf-do.php to get this function working
 add_action( 'woocommerce_checkout_update_order_meta', 'wccpf_checkout_field_update_order_meta', 52);
-add_action( 'woocommerce_add_to_cart', 'wccpf_save_fields', 1, 5 );
 /*
 add_action( 'woocommerce_add_to_cart', 'save_wccpf_name_field', 1, 5 );
 add_filter( 'woocommerce_cart_item_name', 'render_wccpf_meta_on_cart_item', 1, 3 );
 */
 
 /*WordPress Settings API*/
-function display_options() {
+
+function display_options()
+{
+	//include secondary prod cat names
+/*
+	include 'inc/prod-cat-list.php';
+	$cat_count = 0;
+	//dynamically register settings and render settings fields
+	foreach ($all_categories as $cat) {	
+		++$cat_count;
+		if(in_array($cat->term_id, $secondary_cats)) {
+			$wccpf_form_field = 'wccpf_form_field_'.$cat_count;
+			$display_form = 'display_form_'.$cat_count;
+			add_settings_field($wccpf_form_field, "Cat: ".$cat->name." [shortcode]:", $display_form, "wccpf-options", "header_section");
+			register_setting("header_section", $wccpf_form_field);
+			
+/*
+			function $display_form() {
+			    //return $delimiter . strtolower($matches[1]);
+			    return (
+			    //id and name of form element should be same as the setting name.
+			    ?>
+			        <input type="text" name="wccpf_form_field_<?php echo $cat_count;?>" id="wccpf_form_field_<?php echo $cat_count;?>" value="<?php echo esc_attr(get_option('wccpf_form_field_'.$cat_count)); ?>" />
+				<?php
+			)}
+*/
+/*
+		}
+	}
+*/
+/*
+$var = function ($x) {return pow($x,3);};
+echo "cube of 3 = " . $var(3);
+*/
+
     //section name, display name, callback to print description of section, page to which section is attached.
     add_settings_section("header_section", "HAM Options", "display_header_options_content", "wccpf-options");
     
@@ -124,7 +157,7 @@ function display_options() {
 }
 
 function display_header_options_content(){
-	echo "THE header of the wccpf";
+	echo "The header of the wccpf";
 	// Creating an object instance of the product
 	$_product = new WC_Product( $product_id );
 	
@@ -149,7 +182,7 @@ function display_fresh_meat_section_options_content(){
 	include 'inc/prod-cat-list.php';
 	include('inc/frags/wccpf-admin-input-fields.php');
 	//include('inc/frags/test.php');
-	echo 'Number of Secondary Categories: ' . count($secondary_cats);
+	echo 'admin add Secondary Cat Names, length: ' . count($secondary_cats);
 }
 /*
 function display_form(x)

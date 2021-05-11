@@ -1,7 +1,6 @@
 /*
  * This branch was taken from older, functional branch of b_dev
- *
- *
+ * Initial commit from a731b58 april 13, 2021 before b_dev broke checkout
 */
 
 
